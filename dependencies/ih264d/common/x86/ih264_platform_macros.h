@@ -39,10 +39,15 @@
 #define _IH264_PLATFORM_MACROS_H_
 
 #include <stdint.h>
+
+#if !defined(__aarch64__)
 #include <immintrin.h>
 #if defined(_MSC_VER) && defined(__clang__)
 #include <intrin.h>
 #endif
+#endif
+
+
 
 #define CLIP_U8(x) CLIP3(0, UINT8_MAX, (x))
 #define CLIP_S8(x) CLIP3(INT8_MIN, INT8_MAX, (x))

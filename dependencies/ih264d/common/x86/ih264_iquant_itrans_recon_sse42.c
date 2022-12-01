@@ -48,7 +48,12 @@
 #include "ih264_size_defs.h"
 #include "ih264_structs.h"
 #include "ih264_trans_quant_itrans_iquant.h"
+
+#if defined(__aarch64__)
+#include "sse2neon.h"
+#else
 #include <immintrin.h>
+#endif
 
 #ifdef __GNUC__
 #define ATTRIBUTE_SSE42 __attribute__((target("sse4.2")))

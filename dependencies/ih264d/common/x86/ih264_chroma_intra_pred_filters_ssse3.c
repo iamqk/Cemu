@@ -55,6 +55,9 @@
 #include "ih264_macros.h"
 #include "ih264_platform_macros.h"
 #include "ih264_intra_pred_filters.h"
+#if defined(__aarch64__)
+#include "sse2neon.h"
+#endif
 
 #ifdef __GNUC__
 #define ATTRIBUTE_SSSE3 __attribute__((target("ssse3")))

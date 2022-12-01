@@ -3498,6 +3498,9 @@ void ppcAsmTestDisassembler()
 void ppcAsmTest()
 {
 #ifdef CEMU_DEBUG_ASSERT
-	ppcAsmTestDisassembler();
+    #if defined(__aarch64__)
+    #else
+        ppcAsmTestDisassembler();
+    #endif
 #endif
 }

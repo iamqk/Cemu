@@ -924,6 +924,7 @@ void PPCRecompilerX64Gen_imlInstruction_fpr_r_r(PPCRecFunction_t* PPCRecFunction
 		x64Gen_mov_mem8Reg64_imm8(x64GenContext, REG_RSP, offsetof(PPCInterpreter_t, cr)+sizeof(uint8)*(crRegister*4+PPCREC_CR_BIT_EQ), 0);
 		PPCRecompilerX64Gen_redirectRelativeJump(x64GenContext, jumpInstructionOffset2, x64GenContext->codeBufferIndex);
 	}
+#if !defined(__aarch64__)
 	else if( imlInstruction->operation == PPCREC_IML_OP_FPR_BOTTOM_FRES_TO_BOTTOM_AND_TOP )
 	{
 		if( imlInstruction->crRegister != PPC_REC_INVALID_REGISTER )
@@ -953,6 +954,7 @@ void PPCRecompilerX64Gen_imlInstruction_fpr_r_r(PPCRecFunction_t* PPCRecFunction
 		// copy result to bottom of result register
 		x64Gen_movsd_xmmReg_xmmReg(x64GenContext, imlInstruction->op_fpr_r_r.registerResult, REG_RESV_FPR_TEMP);
 	}
+#endif
 	else if( imlInstruction->operation == PPCREC_IML_OP_FPR_NEGATE_PAIR )
 	{
 		cemu_assert_debug(imlInstruction->crRegister == PPC_REC_INVALID_REGISTER);
@@ -975,6 +977,7 @@ void PPCRecompilerX64Gen_imlInstruction_fpr_r_r(PPCRecFunction_t* PPCRecFunction
 		// set sign bit to 0
 		x64Gen_andps_xmmReg_mem128Reg64(x64GenContext, imlInstruction->op_fpr_r_r.registerResult, REG_RESV_RECDATA, offsetof(PPCRecompilerInstanceData_t, _x64XMM_andAbsMaskPair));
 	}
+#if !defined(__aarch64__)
 	else if( imlInstruction->operation == PPCREC_IML_OP_FPR_FRES_PAIR || imlInstruction->operation == PPCREC_IML_OP_FPR_FRSQRTE_PAIR)
 	{
 		cemu_assert_debug(imlInstruction->crRegister == PPC_REC_INVALID_REGISTER);
@@ -996,7 +999,8 @@ void PPCRecompilerX64Gen_imlInstruction_fpr_r_r(PPCRecFunction_t* PPCRecFunction
 
 		x64Gen_unpcklpd_xmmReg_xmmReg(x64GenContext, imlInstruction->op_fpr_r_r.registerResult, REG_RESV_FPR_TEMP); // copy bottom to top
 	}
-	else
+#endif
+    else
 	{
 		assert_dbg();
 	}

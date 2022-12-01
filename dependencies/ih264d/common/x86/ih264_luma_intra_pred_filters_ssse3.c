@@ -66,7 +66,12 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <string.h>
+
+#if defined(__aarch64__)
+#include "sse2neon.h"
+#else
 #include <immintrin.h>
+#endif
 
 /* User include files */
 #include "ih264_defs.h"

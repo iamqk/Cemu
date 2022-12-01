@@ -44,7 +44,12 @@
 /* File Includes                                                             */
 /*****************************************************************************/
 
+#if defined(__aarch64__)
+#include "sse2neon.h"
+#else
 #include <immintrin.h>
+#endif
+
 #include "ih264_typedefs.h"
 #include "ih264_macros.h"
 #include "ih264_platform_macros.h"

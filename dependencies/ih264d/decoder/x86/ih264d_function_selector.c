@@ -57,6 +57,10 @@
 #include "ih264d_structs.h"
 #include "ih264d_function_selector.h"
 
+#if defined(__aarch64__)
+#include "sse2neon.h"
+#endif
+
 void ih264d_init_function_ptr(dec_struct_t *ps_codec)
 {
 
@@ -78,11 +82,18 @@ void ih264d_init_function_ptr(dec_struct_t *ps_codec)
 }
 
 #ifdef __GNUC__
+#if !defined(__aarch64__)
 #include <cpuid.h>
+#endif
+
 
 void __cpuid2(signed int* cpuInfo, unsigned int level)
 {
-    __get_cpuid (level, (unsigned int*)cpuInfo+0, (unsigned int*)cpuInfo+1, (unsigned int*)cpuInfo+2, (unsigned int*)cpuInfo+3);
+    #if defined(__aarch64__)
+    return;
+    #else
+   __get_cpuid (level, (unsigned int*)cpuInfo+0, (unsigned int*)cpuInfo+1, (unsigned int*)cpuInfo+2, (unsigned int*)cpuInfo+3);
+    #endif
 }
 
 #define __getCPUId __cpuid2

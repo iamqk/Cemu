@@ -30,7 +30,12 @@
 #include <cmath>
 #include <ctime>
 #include <cassert>
+
+#if defined(__aarch64__)
+#include "sse2neon.h"
+#else
 #include <immintrin.h>
+#endif
 
 // c++ includes
 #include <string>
@@ -252,14 +257,24 @@ inline uint64 _udiv128(uint64 highDividend, uint64 lowDividend, uint64 divisor, 
 #endif
 
 #ifdef __GNUC__
+#if defined(__aarch64__)
+#else
 #include <cpuid.h>
+#endif
 #endif
 
 inline void cpuid(int cpuInfo[4], int functionId) {
 #if defined(_MSC_VER)
     __cpuid(cpuInfo, functionId);
 #elif defined(__GNUC__)
-    __cpuid(functionId, cpuInfo[0], cpuInfo[1], cpuInfo[2], cpuInfo[3]);
+    #if defined(__aarch64__)
+        cpuInfo[0] = 0;
+        cpuInfo[1] = 0;
+        cpuInfo[2] = 0;
+        cpuInfo[3] = 0;
+    #else
+        __cpuid(functionId, cpuInfo[0], cpuInfo[1], cpuInfo[2], cpuInfo[3]);
+    #endif
 #else
     #error No definition for cpuid
 #endif
@@ -269,7 +284,14 @@ inline void cpuidex(int cpuInfo[4], int functionId, int subFunctionId) {
 #if defined(_MSC_VER)
     __cpuidex(cpuInfo, functionId, subFunctionId);
 #elif defined(__GNUC__)
+    #if defined(__aarch64__)
+        cpuInfo[0] = 0;
+        cpuInfo[1] = 0;
+        cpuInfo[2] = 0;
+        cpuInfo[3] = 0;
+    #else
     __cpuid_count(functionId, subFunctionId, cpuInfo[0], cpuInfo[1], cpuInfo[2], cpuInfo[3]);
+    #endif
 #else
     #error No definition for cpuidex
 #endif

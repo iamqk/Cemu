@@ -4,7 +4,9 @@
 #include "Cafe/HW/Latte/ISA/RegDefines.h"
 
 #if __GNUC__
-#include <immintrin.h>
+#if !defined(__aarch64__)
+#include "sse2neon.h"
+#endif
 #endif
 
 #ifdef __GNUC__
@@ -292,6 +294,7 @@ void LatteIndices_generateAutoLineLoopIndices(void* indexDataOutput, uint32 coun
 	indexMax = std::max(count, 1u) - 1;
 }
 
+/*
 ATTRIBUTE_AVX2
 void LatteIndices_fastConvertU16_AVX2(const void* indexDataInput, void* indexDataOutput, uint32 count, uint32& indexMin, uint32& indexMax)
 {
@@ -487,6 +490,7 @@ void LatteIndices_fastConvertU32_AVX2(const void* indexDataInput, void* indexDat
 	indexMax = std::max(indexMax, _maxIndex);
 	indexMin = std::min(indexMin, _minIndex);
 }
+ */
 
 template<typename T>
 void _LatteIndices_alternativeCalculateIndexMinMax(const void* indexData, uint32 count, uint32 primitiveRestartIndex, uint32& indexMin, uint32& indexMax)
@@ -669,18 +673,21 @@ void LatteIndices_decode(const void* indexData, LatteIndexType indexType, uint32
 	{
 		if (indexType == LatteIndexType::U16_BE)
 		{
+            /*
 			if (_cpuExtension_AVX2)
 				LatteIndices_fastConvertU16_AVX2(indexData, indexOutputPtr, count, indexMin, indexMax);
 			else if (_cpuExtension_SSE4_1 && _cpuExtension_SSSE3)
 				LatteIndices_fastConvertU16_SSE41(indexData, indexOutputPtr, count, indexMin, indexMax);
-			else
+			else */
 				LatteIndices_convertBE<uint16>(indexData, indexOutputPtr, count, indexMin, indexMax);
 		}
 		else if (indexType == LatteIndexType::U32_BE)
 		{
+            /*
 			if (_cpuExtension_AVX2)
 				LatteIndices_fastConvertU32_AVX2(indexData, indexOutputPtr, count, indexMin, indexMax);
 			else
+             */
 				LatteIndices_convertBE<uint32>(indexData, indexOutputPtr, count, indexMin, indexMax);
 		}
 		else if (indexType == LatteIndexType::U16_LE)

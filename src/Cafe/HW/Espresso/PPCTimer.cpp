@@ -1,5 +1,7 @@
 #include "Cafe/HW/Espresso/Const.h"
+#if !defined(__aarch64__)
 #include <immintrin.h>
+#endif
 #include "asm/x64util.h"
 #include "config/ActiveSettings.h"
 #include "util/helpers/fspinlock.h"
@@ -148,8 +150,13 @@ uint64 PPCTimer_getFromRDTSC()
 	_addcarry_u64(c, _rdtscAcc.high, diff.high, &_rdtscAcc.high);
 	#else
 	// requires casting because of long / long long nonesense
-	c = _addcarry_u64(c, _rdtscAcc.low, diff.low, (unsigned long long*)&_rdtscAcc.low);
-	_addcarry_u64(c, _rdtscAcc.high, diff.high, (unsigned long long*)&_rdtscAcc.high);
+    #if defined(__aarch64__)
+    c = __builtin_addcll(c, _rdtscAcc.low, diff.low, (unsigned long long*)&_rdtscAcc.low);
+    __builtin_addcll(c, _rdtscAcc.high, diff.high, (unsigned long long*)&_rdtscAcc.high);
+    #else
+    c = _addcarry_u64(c, _rdtscAcc.low, diff.low, (unsigned long long*)&_rdtscAcc.low);
+    _addcarry_u64(c, _rdtscAcc.high, diff.high, (unsigned long long*)&_rdtscAcc.high);
+    #endif
 	#endif
 
 	uint64 remainder;

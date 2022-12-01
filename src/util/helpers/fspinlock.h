@@ -19,7 +19,12 @@ public:
 		{
 			if (!m_lockBool.exchange(true, std::memory_order_acquire))
 				break;
-			while (m_lockBool.load(std::memory_order_relaxed)) _mm_pause();
+			while (m_lockBool.load(std::memory_order_relaxed))
+                #if defined(__aarch64__)
+                ;
+                #else
+                _mm_pause();
+                #endif
 		}
 	}
 
