@@ -42,9 +42,10 @@
 
 #if !defined(__aarch64__)
 #include <immintrin.h>
+#endif
+
 #if defined(_MSC_VER) && defined(__clang__)
 #include <intrin.h>
-#endif
 #endif
 
 

@@ -47,8 +47,11 @@
 #include "ih264_mem_fns.h"
 #include "ih264_debug.h"
 
-//#include <immintrin.h>
+#if defined(__aarch64__)
 #include "sse2neon.h"
+#else
+#include <immintrin.h>
+#endif
 
 #ifdef __GNUC__
 #define ATTRIBUTE_SSSE3 __attribute__((target("ssse3")))
