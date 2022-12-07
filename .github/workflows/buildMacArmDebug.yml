@@ -1,6 +1,11 @@
 name: Build Cemu
 
 on:
+  workflow_dispatch:
+    inputs:
+      PlaceholderInput:
+        description: PlaceholderInput
+        required: false
   workflow_call:
     inputs:
       deploymode:
