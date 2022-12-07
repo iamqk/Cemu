@@ -145,6 +145,7 @@ target_link_libraries(CemuGui PRIVATE
 	OpenSSL::Crypto
 	pugixml::pugixml
 	ZArchive::zarchive
+	libucontext::ucontext1
 )
 
 if(ENABLE_WXWIDGETS AND UNIX AND NOT APPLE)
