@@ -156,4 +156,11 @@ if (NOT ZArchive_FOUND)
 	add_subdirectory("dependencies/ZArchive" EXCLUDE_FROM_ALL)
 endif()
 
+if(CMAKE_APPLE_SILICON_PROCESSOR STREQUAL "arm64")
+	find_package(libucontext)
+	if (NOT libucontext_FOUND)
+		add_subdirectory("dependencies/libucontext" EXCLUDE_FROM_ALL)
+	endif()
+endif()
+
 add_subdirectory(src)

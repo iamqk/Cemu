@@ -498,6 +498,7 @@ target_link_libraries(CemuCafe PRIVATE
 	PNG::PNG
 	pugixml::pugixml
 	ZArchive::zarchive
+	libucontext::ucontext1
 	ZLIB::ZLIB
 	zstd::zstd
 )
