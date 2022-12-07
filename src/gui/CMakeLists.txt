@@ -145,7 +145,6 @@ target_link_libraries(CemuGui PRIVATE
 	OpenSSL::Crypto
 	pugixml::pugixml
 	ZArchive::zarchive
-	libucontext::ucontext1
 )
 
 if(ENABLE_WXWIDGETS AND UNIX AND NOT APPLE)
@@ -161,3 +160,8 @@ if (ENABLE_WXWIDGETS)
 	# PUBLIC because wx/app.h is included in CemuApp.h
 	target_link_libraries(CemuGui PUBLIC wx::base wx::core wx::gl wx::propgrid wx::xrc)
 endif()
+
+if(CMAKE_APPLE_SILICON_PROCESSOR STREQUAL "arm64")
+	target_link_libraries(CemuGui PRIVATE libucontext::ucontext1)
+endif()
+

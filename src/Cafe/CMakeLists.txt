@@ -498,7 +498,6 @@ target_link_libraries(CemuCafe PRIVATE
 	PNG::PNG
 	pugixml::pugixml
 	ZArchive::zarchive
-	libucontext::ucontext1
 	ZLIB::ZLIB
 	zstd::zstd
 )
@@ -509,4 +508,8 @@ endif()
 
 if(WIN32)
 	target_link_libraries(CemuCafe PRIVATE iphlpapi)
+endif()
+
+if(CMAKE_APPLE_SILICON_PROCESSOR STREQUAL "arm64")
+	target_link_libraries(CemuGui PRIVATE libucontext::ucontext1)
 endif()
