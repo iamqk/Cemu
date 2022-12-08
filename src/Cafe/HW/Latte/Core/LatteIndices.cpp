@@ -4,9 +4,7 @@
 #include "Cafe/HW/Latte/ISA/RegDefines.h"
 
 #if __GNUC__
-#if defined(__aarch64__)
-#include "sse2neon.h"
-#else
+#if !defined(__aarch64__)
 #include <immintrin.h>
 #endif
 #endif
