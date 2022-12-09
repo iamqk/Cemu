@@ -21,7 +21,7 @@ public:
 				break;
 			while (m_lockBool.load(std::memory_order_relaxed))
                 #if defined(__aarch64__)
-                ;
+                _mm_pause();
                 #else
                 _mm_pause();
                 #endif
